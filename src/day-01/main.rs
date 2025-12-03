@@ -1,8 +1,8 @@
 const INPUT: &str = include_str!("input.txt");
 
 fn main() {
-    println!("part1 = {}", part1());
-    println!("part2 = {}", part2());
+    dbg!(part1());
+    dbg!(part2());
 }
 
 fn part1() -> u16 {
@@ -32,7 +32,6 @@ fn part1() -> u16 {
 fn part2() -> u16 {
     let mut pass: u16 = 0;
     let mut dial: u8 = 50;
-    let mut zero = dial == 0;
 
     for line in INPUT.trim_end().lines() {
         let (direction, num) = line.split_at(1);
@@ -42,14 +41,14 @@ fn part2() -> u16 {
 
         match direction {
             "L" => {
-                dial += 100 - distance;
-                if dial <= 100 && !zero {
+                if dial != 0 && dial <= distance {
                     pass += 1;
                 }
+                dial += 100 - distance;
             }
             "R" => {
                 dial += distance;
-                if dial >= 100 && !zero {
+                if dial >= 100 {
                     pass += 1;
                 }
             }
@@ -57,7 +56,6 @@ fn part2() -> u16 {
         };
 
         dial %= 100;
-        zero = dial == 0;
     }
 
     pass
