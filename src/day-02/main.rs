@@ -1,7 +1,5 @@
 const INPUT: &str = include_str!("input.txt");
 
-// i wont be using string
-
 fn main() {
     dbg!(part1());
     dbg!(part2());
