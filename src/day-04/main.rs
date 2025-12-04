@@ -86,17 +86,15 @@ fn part2() -> u32 {
 fn count_neighbor(row: &[u8], index: usize, center: bool) -> u8 {
     let mut count = 0;
 
-    if let Some(i) = index.checked_sub(1)
-        && row[i] == ROLL_OF_PAPER
-    {
-        count += 1;
-    }
-
-    if index + 1 < row.len() && row[index + 1] == ROLL_OF_PAPER {
+    if index > 0 && row[index - 1] == ROLL_OF_PAPER {
         count += 1;
     }
 
     if !center && row[index] == ROLL_OF_PAPER {
+        count += 1;
+    }
+
+    if index < row.len() - 1 && row[index + 1] == ROLL_OF_PAPER {
         count += 1;
     }
 
