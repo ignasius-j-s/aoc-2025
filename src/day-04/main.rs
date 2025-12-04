@@ -60,14 +60,14 @@ fn part2() -> u32 {
 
                 let mut adjacent_roll_count: u8 = 0;
 
-                if let Some(prev_row) = y.checked_sub(1).map(|it| input[it].as_slice()) {
-                    adjacent_roll_count += count_neighbor(prev_row, x, false);
+                if y > 0 {
+                    adjacent_roll_count += count_neighbor(input[y - 1].as_slice(), x, false);
                 }
 
                 adjacent_roll_count += count_neighbor(input[y].as_slice(), x, true);
 
-                if let Some(next_row) = input.get(y + 1).map(Vec::as_slice) {
-                    adjacent_roll_count += count_neighbor(next_row, x, false);
+                if y < input.len() - 1 {
+                    adjacent_roll_count += count_neighbor(input[y + 1].as_slice(), x, false);
                 }
 
                 if adjacent_roll_count < 4 {
