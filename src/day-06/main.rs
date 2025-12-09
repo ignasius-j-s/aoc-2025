@@ -48,7 +48,7 @@ fn part2() -> u64 {
             }
         }
 
-        if digits.len() != 0 {
+        if !digits.is_empty() {
             let mut num = 0;
             for (i, &digit) in digits.iter().rev().enumerate() {
                 num += digit as u64 * 10_u64.pow(i as u32);
