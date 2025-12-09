@@ -1,6 +1,6 @@
 const INPUT: &str = include_str!("input.txt");
-const ROLL_OF_PAPER: u8 = 0x40; // @ in ascii
-const REMOVED: u8 = 0x58; // X in ascii
+const ROLL_OF_PAPER: u8 = b'@';
+const REMOVED: u8 = b'X';
 
 fn main() {
     dbg!(part1());
