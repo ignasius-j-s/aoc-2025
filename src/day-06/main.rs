@@ -48,15 +48,15 @@ fn part2() -> u64 {
             }
         }
 
-        if !digits.is_empty() {
-            let mut num = 0;
-            for (i, &digit) in digits.iter().rev().enumerate() {
-                num += digit as u64 * 10_u64.pow(i as u32);
-            }
-            numbers.push(num);
-        } else {
+        if digits.is_empty() {
             continue;
         }
+
+        let mut num = 0;
+        for (i, &digit) in digits.iter().rev().enumerate() {
+            num += digit as u64 * 10_u64.pow(i as u32);
+        }
+        numbers.push(num);
 
         match op {
             '*' => {
