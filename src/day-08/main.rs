@@ -1,12 +1,10 @@
-use std::collections::HashSet;
-
 const INPUT: &str = include_str!("input.txt");
 
 fn main() {
     let coords = parse_input();
     let len = coords.len();
     let mut connections = Vec::with_capacity(len * (len - 1) / 2);
-    let mut circuits: Vec<HashSet<usize>> = Vec::new();
+    let mut circuits: Vec<Vec<usize>> = Vec::new();
     let mut locations: Vec<Option<usize>> = vec![None; coords.len()];
 
     for i in 0..len {
@@ -24,7 +22,7 @@ fn main() {
 
     for &(_, i, j) in connections.iter() {
         if connected == 1000 {
-            let mut circuits_len: Vec<usize> = circuits.iter().map(HashSet::len).collect();
+            let mut circuits_len: Vec<usize> = circuits.iter().map(Vec::len).collect();
             circuits_len.sort();
             part1 = circuits_len.iter().rev().take(3).product();
         }
@@ -33,9 +31,8 @@ fn main() {
         let circuit_pos = match (locations[i], locations[j]) {
             (None, None) => {
                 let pos = circuits.len();
-                let mut new_circuit = HashSet::new();
+                let new_circuit = vec![i, j];
 
-                new_circuit.extend([i, j]);
                 circuits.push(new_circuit);
                 locations[i] = Some(pos);
                 locations[j] = Some(pos);
@@ -43,13 +40,13 @@ fn main() {
                 pos
             }
             (None, Some(pos)) => {
-                circuits[pos].insert(i);
+                circuits[pos].push(i);
                 locations[i] = Some(pos);
 
                 pos
             }
             (Some(pos), None) => {
-                circuits[pos].insert(j);
+                circuits[pos].push(j);
                 locations[j] = Some(pos);
 
                 pos
@@ -63,7 +60,7 @@ fn main() {
                 let (pos1, pos2) = (p1.max(p2), p1.min(p2));
 
                 for i in std::mem::take(&mut circuits[pos2]) {
-                    circuits[pos1].insert(i);
+                    circuits[pos1].push(i);
                     locations[i] = Some(pos1);
                 }
 
