@@ -1,15 +1,15 @@
 const INPUT: &str = include_str!("input.txt");
 
 fn main() {
-    let coords = parse_input();
-    let len = coords.len();
-    let mut connections = Vec::with_capacity(len * (len - 1) / 2);
+    let jbox_coords = parse_input();
+    let jbox_count = jbox_coords.len();
+    let mut connections = Vec::with_capacity(jbox_count * (jbox_count - 1) / 2);
     let mut circuits: Vec<Vec<usize>> = Vec::new();
-    let mut locations: Vec<Option<usize>> = vec![None; coords.len()];
+    let mut circuit_of: Vec<Option<usize>> = vec![None; jbox_count];
 
-    for i in 0..len {
-        for j in i + 1..len {
-            let dist = distance(coords[i], coords[j]);
+    for i in 0..jbox_count {
+        for j in i + 1..jbox_count {
+            let dist = distance(jbox_coords[i], jbox_coords[j]);
             connections.push((dist, i, j));
         }
     }
@@ -28,26 +28,26 @@ fn main() {
         }
         connected += 1;
 
-        let circuit_pos = match (locations[i], locations[j]) {
+        let circuit_pos = match (circuit_of[i], circuit_of[j]) {
             (None, None) => {
                 let pos = circuits.len();
                 let new_circuit = vec![i, j];
 
                 circuits.push(new_circuit);
-                locations[i] = Some(pos);
-                locations[j] = Some(pos);
+                circuit_of[i] = Some(pos);
+                circuit_of[j] = Some(pos);
 
                 pos
             }
             (None, Some(pos)) => {
                 circuits[pos].push(i);
-                locations[i] = Some(pos);
+                circuit_of[i] = Some(pos);
 
                 pos
             }
             (Some(pos), None) => {
                 circuits[pos].push(j);
-                locations[j] = Some(pos);
+                circuit_of[j] = Some(pos);
 
                 pos
             }
@@ -61,15 +61,16 @@ fn main() {
 
                 for i in std::mem::take(&mut circuits[pos2]) {
                     circuits[pos1].push(i);
-                    locations[i] = Some(pos1);
+                    circuit_of[i] = Some(pos1);
                 }
 
                 pos1
             }
         };
 
-        if circuits[circuit_pos].len() == len {
-            part2 = coords[i].0 * coords[j].0;
+        if circuits[circuit_pos].len() == jbox_count {
+            part2 = jbox_coords[i].0 * jbox_coords[j].0;
+            break;
         }
     }
 
