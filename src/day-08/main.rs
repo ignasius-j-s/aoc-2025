@@ -18,15 +18,23 @@ fn main() {
 
     let mut part1 = 0;
     let mut part2 = 0;
-    let mut connected = 0;
 
-    for &(_, i, j) in connections.iter() {
+    for (connected, &(_, i, j)) in connections.iter().enumerate() {
         if connected == 1000 {
-            let mut circuits_len: Vec<usize> = circuits.iter().map(Vec::len).collect();
-            circuits_len.sort();
-            part1 = circuits_len.iter().rev().take(3).product();
+            let mut biggest_len = [0; 3];
+
+            for len in circuits.iter().map(Vec::len) {
+                for i in 0..3 {
+                    if len > biggest_len[i] {
+                        biggest_len[i..].rotate_right(1);
+                        biggest_len[i] = len;
+                        break;
+                    }
+                }
+            }
+
+            part1 = biggest_len.iter().product();
         }
-        connected += 1;
 
         let circuit_pos = match (circuit_of[i], circuit_of[j]) {
             (None, None) => {
